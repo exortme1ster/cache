@@ -22,11 +22,10 @@ c := cache.New()
 
 ### Setting a Value
 
-You can store any value associated with a string key:
+You can store any value associated with a string key and set time after which it will expire:
 
 ```go
-c.Set("myKey", "myValue")
-c.Set("anotherKey", 12345)
+c.Set("1", 20, time.Second*3)
 ```
 
 ### Getting a Value
@@ -47,14 +46,6 @@ Remove a key and its associated value:
 ```go
 c.Delete("myKey")
 ```
-
-## Note
-
-This package uses a map to store data in-memory. This means:
-
-- It's fast and suitable for temporary storage.
-- If the application is stopped, all data in the cache will be lost.
-- It's not thread-safe by default. If you intend to use it in a multi-threaded environment, you will need to manage concurrency control.
 
 ## Contributing
 
