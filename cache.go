@@ -28,7 +28,7 @@ func New() *Cache {
 	return c
 }
 
-func (c Cache) Set(key string, value interface{}, ttl time.Duration) {
+func (c *Cache) Set(key string, value interface{}, ttl time.Duration) {
 	c.mu.Lock()
 	c.memoryCache[key] = item{
 		value:  value,
@@ -37,7 +37,7 @@ func (c Cache) Set(key string, value interface{}, ttl time.Duration) {
 	c.mu.Unlock()
 }
 
-func (c Cache) Get(key string) interface{} {
+func (c *Cache) Get(key string) interface{} {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
@@ -49,13 +49,13 @@ func (c Cache) Get(key string) interface{} {
 	return it.value
 }
 
-func (c Cache) Delete(key string) {
+func (c *Cache) Delete(key string) {
 	c.mu.Lock()
 	delete(c.memoryCache, key)
 	c.mu.Unlock()
 }
 
-func (c Cache) cleanupExpiredItems() {
+func (c *Cache) cleanupExpiredItems() {
 	for {
 		select {
 		case <-c.ticker.C:
